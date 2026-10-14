@@ -1,0 +1,33 @@
+{
+  "name": "student-alumni-connect-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MERN backend API for Student Alumni Connect",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "create:super-admin": "node scripts/createSuperAdmin.js",
+    "test:email": "node scripts/testEmail.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "mern",
+    "express",
+    "mongodb"
+  ],
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.9.5",
+    "nodemailer": "^10.0.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
