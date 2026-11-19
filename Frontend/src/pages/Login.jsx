@@ -1,3 +1,4 @@
+/** Purpose: Authenticate a user, route them by role, and support verification retries. */
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
@@ -69,49 +70,51 @@ export default function Login() {
   };
 
   return (
-    <main className="relative isolate grid min-h-screen place-items-center overflow-hidden bg-[#f8faff] px-4 py-10 text-slate-900 sm:px-6">
+    <main className="relative isolate grid min-h-screen place-items-center overflow-hidden bg-bg px-4 py-10 text-ink sm:px-6">
       <div className="pointer-events-none absolute -left-32 top-10 -z-10 h-80 w-80 rounded-full bg-indigo-200/60 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-0 -z-10 h-80 w-80 rounded-full bg-violet-200/60 blur-3xl" />
-      <section className="w-full max-w-md rounded-[28px] border border-white bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(79,70,229,0.3)] backdrop-blur sm:p-9">
-        <Link className="text-sm font-bold text-indigo-700 hover:text-violet-700" to="/">
+      <section className="w-full max-w-md rounded-[28px] border border-ln bg-sf/90 p-6 shadow-[0_30px_90px_-35px_rgba(79,70,229,0.3)] backdrop-blur sm:p-9">
+        <Link className="text-sm font-bold text-pri hover:text-violet-700" to="/">
           ← Home
         </Link>
-        <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.16em] text-indigo-600">
+        <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.16em] text-pri">
           Welcome back
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight">Log in</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
+        <p className="mt-2 text-sm leading-6 text-mut">
           Use the same login page for your university account.
         </p>
 
         {error && (
-          <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p role="alert" className="mt-5 rounded-xl border border-bdb bg-bdb px-4 py-3 text-sm text-bd">
             {error}
           </p>
         )}
+        {/* Verification can be retried here when the API rejects an unverified account. */}
         {emailNotVerified && (
           <div className="mt-3">
             <button
               type="button"
               onClick={resendVerification}
               disabled={resending || !email}
-              className="cursor-pointer border-0 bg-transparent p-0 text-sm font-bold text-indigo-700 hover:text-violet-700 disabled:cursor-wait disabled:opacity-60"
+              className="cursor-pointer border-0 bg-transparent p-0 text-sm font-bold text-pri hover:text-violet-700 disabled:cursor-wait disabled:opacity-60"
             >
               {resending ? "Sending…" : "Resend verification email"}
             </button>
             {resendMessage && (
-              <p role="status" className="mt-2 text-sm text-emerald-800">
+              <p role="status" className="mt-2 text-sm text-ok">
                 {resendMessage}
               </p>
             )}
             {resendError && (
-              <p role="alert" className="mt-2 text-sm text-red-700">
+              <p role="alert" className="mt-2 text-sm text-bd">
                 {resendError}
               </p>
             )}
           </div>
         )}
 
+        {/* Credentials are submitted through AuthContext and routed by returned role. */}
         <form className="mt-6 space-y-4" onSubmit={submit}>
           <div>
             <label className="mb-1.5 block text-sm font-bold" htmlFor="login-email">Email</label>
@@ -122,7 +125,7 @@ export default function Login() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             />
           </div>
           <div>
@@ -134,7 +137,7 @@ export default function Login() {
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             />
           </div>
           <button
@@ -145,9 +148,9 @@ export default function Login() {
             {submitting ? "Logging in…" : "Log in"}
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-slate-500">
+        <p className="mt-6 text-center text-sm text-mut">
           New here?{" "}
-          <Link className="font-bold text-indigo-700 hover:text-violet-700" to="/register">
+          <Link className="font-bold text-pri hover:text-violet-700" to="/register">
             Create an account
           </Link>
         </p>

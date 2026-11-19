@@ -1,3 +1,4 @@
+/** Purpose: Define the database record for successful super-admin changes. */
 const mongoose = require("mongoose");
 
 const adminAuditLogSchema = new mongoose.Schema(

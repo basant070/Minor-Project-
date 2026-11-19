@@ -1,3 +1,4 @@
+/** Purpose: Restrict a route to one or more specified account roles. */
 const authorizeRoles = (...allowedRoles) => (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "Authentication required." });

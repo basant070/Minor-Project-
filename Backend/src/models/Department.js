@@ -1,3 +1,4 @@
+/** Purpose: Define a department record and its connection to an institute. */
 const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema(
@@ -28,6 +29,7 @@ const departmentSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Department codes only need to be unique within the same institute.
 departmentSchema.index({ tenantId: 1, code: 1 }, { unique: true });
 
 module.exports =

@@ -1,3 +1,4 @@
+/** Purpose: Ask users to confirm or cancel a potentially destructive action. */
 export default function ConfirmModal({ message, onCancel, onConfirm }) {
   return (
     <div className="fixed inset-0 z-20 grid place-items-center bg-[rgba(10,10,30,0.5)] p-4">

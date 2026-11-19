@@ -1,3 +1,4 @@
+/** Purpose: Render the public landing navigation or the authenticated portal header. */
 import { useState } from "react";
 import { PORTAL } from "../data";
 
@@ -13,6 +14,7 @@ export default function Navbar({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Public mode scrolls to landing-page sections instead of changing routes.
   if (publicPage) {
     const scrollTo = (id) => {
       setMenuOpen(false);
@@ -20,7 +22,7 @@ export default function Navbar({
     };
 
     return (
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/50 bg-white/50 shadow-sm backdrop-blur-xl">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-ln/50 bg-sf/50 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <a
           href="#home"
@@ -34,17 +36,17 @@ export default function Navbar({
             AC
           </span>
           <span>
-            <b className="block text-sm font-extrabold tracking-tight text-slate-900 sm:text-base">
+            <b className="block text-sm font-extrabold tracking-tight text-ink sm:text-base">
               Alumni-Student Connect
             </b>
-            <span className="hidden text-xs text-slate-500 sm:block">
+            <span className="hidden text-xs text-mut sm:block">
               {PORTAL}
             </span>
           </span>
         </a>
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-xl border border-ln bg-sf text-ink transition hover:border-ln hover:bg-soft md:hidden"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
           aria-controls="public-navigation"
@@ -60,18 +62,18 @@ export default function Navbar({
         <nav
           id="public-navigation"
           aria-label="Main navigation"
-          className={`${menuOpen ? "flex" : "hidden"} w-full flex-col gap-1 border-t border-slate-100 pt-3 md:flex md:w-auto md:flex-row md:items-center md:gap-1 md:border-0 md:pt-0`}
+          className={`${menuOpen ? "flex" : "hidden"} w-full flex-col gap-1 border-t border-ln pt-3 md:flex md:w-auto md:flex-row md:items-center md:gap-1 md:border-0 md:pt-0`}
         >
-          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 md:w-auto md:text-center" onClick={() => scrollTo("home")}>
+          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-mut transition hover:bg-soft hover:text-pri md:w-auto md:text-center" onClick={() => scrollTo("home")}>
             Home
           </button>
-          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 md:w-auto md:text-center" onClick={() => scrollTo("about")}>
+          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-mut transition hover:bg-soft hover:text-pri md:w-auto md:text-center" onClick={() => scrollTo("about")}>
             About
           </button>
-          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 md:w-auto md:text-center" onClick={() => scrollTo("guide")}>
+          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-mut transition hover:bg-soft hover:text-pri md:w-auto md:text-center" onClick={() => scrollTo("guide")}>
             Guidelines
           </button>
-          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 md:w-auto md:text-center" onClick={() => scrollTo("contact")}>
+          <button className="w-full rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-sm font-semibold text-mut transition hover:bg-soft hover:text-pri md:w-auto md:text-center" onClick={() => scrollTo("contact")}>
             Contact
           </button>
           <button
@@ -89,16 +91,17 @@ export default function Navbar({
     );
   }
 
+  // Portal mode shows the current institute/page and dashboard actions.
   return (
-    <div className="sticky top-0 z-[15] flex flex-wrap items-center justify-between gap-3 border-b border-ln bg-white/85 px-4 py-3 shadow-sm backdrop-blur-xl sm:px-6">
+    <div className="sticky top-0 z-[15] flex flex-wrap items-center justify-between gap-3 border-b border-ln bg-sf/85 px-4 py-3 shadow-sm backdrop-blur-xl sm:px-6">
       <div className="min-w-0 flex-1">
-        <b className="block break-words text-sm font-extrabold tracking-[0.02em] text-slate-900 sm:text-base">{university ? university.toUpperCase() : "ALUMNI-STUDENT CONNECT"}</b>
+        <b className="block break-words text-sm font-extrabold tracking-[0.02em] text-ink sm:text-base">{university ? university.toUpperCase() : "ALUMNI-STUDENT CONNECT"}</b>
         <span className="block text-xs text-mut">{subtitle}</span>
       </div>
       <span className="flex flex-none flex-wrap items-center gap-2">
         <button
           type="button"
-          className={`relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition ${activePage === "notif" ? "border-indigo-200 bg-indigo-50 text-indigo-700" : "border-ln bg-white text-ink hover:bg-soft"}`}
+          className={`relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition ${activePage === "notif" ? "border-ln bg-soft text-pri" : "border-ln bg-sf text-ink hover:bg-soft"}`}
           aria-label={newCount ? `Notifications, ${newCount} unread` : "Notifications"}
           title="Notifications"
           aria-current={activePage === "notif" ? "page" : undefined}
@@ -114,7 +117,7 @@ export default function Navbar({
             </span>
           )}
         </button>
-        <button className="inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-[linear-gradient(135deg,var(--pri),var(--pri2))] px-4 py-[9px] font-bold text-white transition-colors duration-150 hover:brightness-110 !bg-none border border-ln bg-sf !text-ink !px-3 !py-1.5 !text-[13px] hover:!border-rose-200 hover:!bg-rose-50 hover:!text-rose-700" onClick={onLogout}>
+        <button className="inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-[linear-gradient(135deg,var(--pri),var(--pri2))] px-4 py-[9px] font-bold text-white transition-colors duration-150 hover:brightness-110 !bg-none border border-ln bg-sf !text-ink !px-3 !py-1.5 !text-[13px] hover:!border-bdb hover:!bg-bdb hover:!text-bd" onClick={onLogout}>
           Logout
         </button>
       </span>

@@ -1,3 +1,4 @@
+/** Purpose: Render a responsive set of labeled dashboard metrics. */
 export default function Stats({ items }) {
   return (
     <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">

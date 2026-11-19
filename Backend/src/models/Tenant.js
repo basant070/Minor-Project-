@@ -1,3 +1,4 @@
+/** Purpose: Define an institute record, including its unique slug and status. */
 const mongoose = require("mongoose");
 
 const tenantSchema = new mongoose.Schema(

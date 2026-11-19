@@ -1,16 +1,98 @@
-# React + Vite
+# Frontend guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The frontend is a React single-page application built with Vite. It uses
+React Router for navigation, Tailwind CSS for styling, and Axios for most
+backend requests.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From the `Frontend` directory:
 
-## React Compiler
+```powershell
+Copy-Item .env.example .env
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The development server normally runs at `http://localhost:5173`.
 
-## Expanding the Oxlint configuration
+| Variable | Description |
+| --- | --- |
+| `VITE_API_URL` | Backend API base URL, including `/api`. Defaults to `http://localhost:5000/api`. |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Use the scripts below from this directory:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server. |
+| `npm run lint` | Run Oxlint. |
+| `npm run build` | Create the production bundle in `dist/`. |
+| `npm run preview` | Preview the production bundle locally. |
+
+## Routes and page ownership
+
+Routes are declared in `src/App.jsx`.
+
+| Route | Page/component | Purpose |
+| --- | --- | --- |
+| `/` | `pages/LandingPage.jsx` | Public landing page. |
+| `/login` | `pages/Login.jsx` | Sign in. |
+| `/register` | `pages/Register.jsx` | Student/alumni registration. |
+| `/verify-email` | `pages/VerifyEmail.jsx` | Verify an email-address token. |
+| `/student` | `pages/CommunityPortal.jsx` → `pages/PortalPage.jsx` | Student community dashboard. |
+| `/alumni` | `pages/CommunityPortal.jsx` → `pages/PortalPage.jsx` | Alumni community dashboard. |
+| `/institute-admin` | `pages/InstituteAdminPortal.jsx` → `pages/PortalPage.jsx` | Institute-admin dashboard. |
+| `/super-admin` | `pages/SuperAdminDashboard.jsx` | Platform-wide administration. |
+| `/home` | `AuthenticatedHome` in `App.jsx` | Redirect to the signed-in user's role home. |
+
+`ProtectedRoute` checks whether a user is signed in and has the route's allowed
+role. The backend still performs its own authorization; frontend checks are
+not a security boundary.
+
+## Source map
+
+| Location | Responsibility |
+| --- | --- |
+| `src/main.jsx` | Loads global CSS, sets the initial theme, and mounts React. |
+| `src/App.jsx` | Mounts providers and declares application routes. |
+| `src/auth/` | Authentication context, session restoration, and protected routes. |
+| `src/theme/` | Shared light/dark theme state and local-storage persistence. |
+| `src/api/axiosClient.js` | API base URL and bearer-token request interceptor. |
+| `src/pages/` | Route-level screens and dashboard page composition. |
+| `src/components/` | Reusable navigation, cards, forms, dialogs, and the shared footer. |
+| `src/data.js` | Shared sample data and UI constants. |
+| `src/index.css` | Tailwind import, global styles, and light/dark color tokens. |
+
+## Sign-in and API request flow
+
+1. `AuthProvider` in `src/auth/authContext.jsx` restores a saved `authToken`
+   by requesting `/auth/profile`.
+2. Login stores the token in browser `localStorage`; logout removes it.
+3. `src/api/axiosClient.js` adds the token as an
+   `Authorization: Bearer ...` header when present.
+4. `ProtectedRoute` redirects unauthenticated users to `/login` and sends users
+   with the wrong role to their own role home.
+5. Backend middleware independently verifies tokens, account status, role, and
+   tenant access.
+
+## Dashboard data
+
+`CommunityPortal.jsx` loads the signed-in user's institute and passes user,
+toast, confirmation, and logout behavior to `PortalPage.jsx`. The institute
+admin route uses `InstituteAdminPortal.jsx` to load its institute context and
+then uses the same `PortalPage.jsx` screen.
+
+The super-admin screen is in `SuperAdminDashboard.jsx` and calls the
+`/super-admin` API endpoints. The community UI also contains prototype
+features; many example posts, events, jobs, profiles, and interactions come
+from `src/data.js` or local component state rather than persisted backend
+endpoints. Check the relevant component and backend route before assuming a
+screen's data is stored in MongoDB.
+
+## Light and dark themes
+
+`ThemeProvider` is mounted around the application in `App.jsx`. The shared
+`ThemeToggle` updates the root document's `data-theme` attribute. Theme colors
+are CSS variables in `src/index.css`; the selected theme is stored under
+`student-alumni-connect-theme` in `localStorage`. On a first visit, the initial
+theme follows the system preference.

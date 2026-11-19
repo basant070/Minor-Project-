@@ -1,3 +1,4 @@
+/** Purpose: Show an opportunity summary with apply and save actions. */
 import Chips from "./Chips";
 
 export default function JobCard({ job, saved, onSave, toast }) {

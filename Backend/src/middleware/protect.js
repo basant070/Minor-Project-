@@ -1,3 +1,4 @@
+/** Purpose: Protect API routes by checking the token, account, institute, and platform status. */
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const PlatformSettings = require("../models/PlatformSettings");
@@ -5,6 +6,7 @@ const Tenant = require("../models/Tenant");
 const User = require("../models/User");
 
 const protect = (req, res, next) => {
+  // Read and verify the signed token before looking up the account.
   const authorization = req.get("authorization");
   const match = authorization && authorization.match(/^Bearer\s+(\S+)$/i);
 
@@ -26,6 +28,7 @@ const protect = (req, res, next) => {
   }
 
   const payload = req.user;
+  // Reject malformed claims before using them in database queries.
   if (
     !mongoose.isValidObjectId(payload.userId) ||
     !["student", "alumni", "institute_admin", "super_admin"].includes(
@@ -38,6 +41,7 @@ const protect = (req, res, next) => {
     return res.status(401).json({ message: "Invalid token." });
   }
 
+  // Recheck current account, institute, and maintenance status on each request.
   User.findById(payload.userId)
     .then((user) => {
       if (!user) {

@@ -1,3 +1,4 @@
+/** Purpose: Provide public lists of active institutes and their active departments. */
 const express = require("express");
 const mongoose = require("mongoose");
 const Department = require("../models/Department");
@@ -5,6 +6,7 @@ const Tenant = require("../models/Tenant");
 
 const router = express.Router();
 
+// Used by public registration to show available institutes.
 router.get("/", async (_req, res, next) => {
   try {
     const institutes = await Tenant.find({ status: "active" })
@@ -17,6 +19,7 @@ router.get("/", async (_req, res, next) => {
   }
 });
 
+// Only return active departments that belong to the requested active institute.
 router.get("/:tenantId/departments", async (req, res, next) => {
   try {
     if (!mongoose.isValidObjectId(req.params.tenantId)) {

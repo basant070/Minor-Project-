@@ -150,14 +150,6 @@ export const INITIAL_CHAT = [
   ["Thank you! Could we talk about ML careers?", 1],
 ];
 
-export const FACULTIES = [
-  "Engineering",
-  "Computer Science & IT",
-  "Business & Management",
-  "Health Sciences",
-  "Humanities & Social Sciences",
-];
-
 export const FACULTY_FIELDS = {
   Engineering: [
     "Software Engineering",

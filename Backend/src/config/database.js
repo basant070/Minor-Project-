@@ -1,3 +1,4 @@
+/** Purpose: Connect the backend to MongoDB when a database address is configured. */
 const mongoose = require("mongoose");
 
 const connectDatabase = async () => {

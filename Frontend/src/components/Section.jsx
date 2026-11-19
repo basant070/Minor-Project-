@@ -1,3 +1,4 @@
+/** Purpose: Standardize dashboard section headings, optional actions, and content. */
 export default function Section({ title, action, children }) {
   return (
     <section>

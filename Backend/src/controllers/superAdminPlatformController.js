@@ -1,3 +1,4 @@
+/** Purpose: Handle platform-wide users, departments, settings, moderation, and reports. */
 const mongoose = require("mongoose");
 const AdminAuditLog = require("../models/AdminAuditLog");
 const Department = require("../models/Department");
@@ -14,6 +15,7 @@ const invalid = (res, message) => res.status(400).json({ message });
 const isObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
+// Search and filter non-super-admin accounts for the platform user list.
 const listUsers = async (req, res, next) => {
   try {
     const filter = { role: { $in: ROLES } };
@@ -172,6 +174,7 @@ const updateTenant = async (req, res, next) => {
   }
 };
 
+// Summarize current institute, account, department, and open-report counts.
 const getDashboard = async (_req, res, next) => {
   try {
     const [tenantCount, userCount, departmentCount, reportCount, roles, statuses] =
@@ -207,6 +210,7 @@ const getDashboard = async (_req, res, next) => {
   }
 };
 
+// Manage institute departments, including their parent institute and status.
 const listDepartments = async (_req, res, next) => {
   try {
     const departments = await Department.find()
@@ -308,6 +312,7 @@ const deleteDepartment = async (req, res, next) => {
   }
 };
 
+// Create the default global settings record the first time settings are requested.
 const getSettings = async (_req, res, next) => {
   try {
     const settings = await PlatformSettings.findOneAndUpdate(
@@ -363,6 +368,7 @@ const updateSettings = async (req, res, next) => {
   }
 };
 
+// This reports configuration and saved switches; it does not call an AI service.
 const getAiStatus = async (_req, res, next) => {
   try {
     const settings = await PlatformSettings.findOne({ key: "global" }).lean();
@@ -381,6 +387,7 @@ const getAiStatus = async (_req, res, next) => {
   }
 };
 
+// Store moderation cases and update their review status.
 const listReports = async (_req, res, next) => {
   try {
     const reports = await ModerationReport.find()
@@ -445,6 +452,7 @@ const updateReport = async (req, res, next) => {
   }
 };
 
+// Group current account counts by institute, role, and account status.
 const getAnalytics = async (_req, res, next) => {
   try {
     const [tenants, userStats] = await Promise.all([
@@ -489,6 +497,7 @@ const getAnalytics = async (_req, res, next) => {
   }
 };
 
+// Return the most recent records of successful super-admin write actions.
 const listAuditLogs = async (_req, res, next) => {
   try {
     const logs = await AdminAuditLog.find()

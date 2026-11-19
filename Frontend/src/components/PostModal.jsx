@@ -1,3 +1,4 @@
+/** Purpose: Collect a community post and pass its content to the parent screen. */
 import { useState } from "react";
 
 export default function PostModal({ onCancel, onPublish, toast }) {

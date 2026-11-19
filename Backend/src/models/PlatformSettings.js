@@ -1,7 +1,9 @@
+/** Purpose: Define global platform switches and role permissions. */
 const mongoose = require("mongoose");
 
 const platformSettingsSchema = new mongoose.Schema(
   {
+    // A single "global" record holds settings for the whole platform.
     key: {
       type: String,
       default: "global",

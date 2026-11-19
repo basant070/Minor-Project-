@@ -1,3 +1,4 @@
+/** Purpose: Reuse a labeled, controlled text input across forms. */
 export default function Field({ id, label, type = "text", value, onChange, ...rest }) {
   return (
     <div className="min-w-0">

@@ -1,3 +1,4 @@
+/** Purpose: Keep the signed-in user and authentication actions available app-wide. */
 import {
   useCallback,
   useEffect,
@@ -13,6 +14,7 @@ export function AuthProvider({ children }) {
     Boolean(localStorage.getItem("authToken")),
   );
 
+  // Revalidate a saved token with the API instead of trusting browser storage.
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) return;

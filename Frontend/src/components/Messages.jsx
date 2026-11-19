@@ -1,3 +1,4 @@
+/** Purpose: Render the prototype chat panel and manage its local message composer. */
 import { useEffect, useRef, useState } from "react";
 import Avatar from "./Avatar";
 
@@ -27,6 +28,7 @@ export default function Messages({ chat, setChat, uni }) {
     <>
       <h2>Messages</h2>
       <div className="rounded-[18px] border border-ln bg-sf p-[18px] shadow-[0_4px_18px_rgba(30,30,80,0.06)]">
+        {/* Conversation identity and history. */}
         <div className="flex flex-wrap items-center gap-2.5">
           <Avatar name="Aarav Joshi" />
           <div>
@@ -41,6 +43,7 @@ export default function Messages({ chat, setChat, uni }) {
             </div>
           ))}
         </div>
+        {/* Composer appends a local message and schedules a demo reply. */}
         <div className="flex flex-wrap items-center gap-2.5 flex-nowrap">
           <input
             placeholder="Write a message"

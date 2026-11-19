@@ -1,3 +1,4 @@
+/** Purpose: Render role-specific community dashboards and their interactive sections. */
 import { useEffect, useState } from "react";
 import axiosClient from "../api/axiosClient";
 import AlumniCard from "../components/AlumniCard";
@@ -11,6 +12,7 @@ import Navbar from "../components/Navbar";
 import PostModal from "../components/PostModal";
 import Profile from "../components/Profile";
 import Section from "../components/Section";
+import SiteFooter from "../components/SiteFooter";
 import Sidebar from "../components/Sidebar";
 import Stats from "../components/Stats";
 import {
@@ -33,6 +35,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
   );
   const [managedUsersError, setManagedUsersError] = useState("");
 
+  // Community posts, jobs, events, and chat use demo data/local state in this prototype.
   const [q, setQ] = useState("");
   const [batch, setBatch] = useState("");
   const [view, setView] = useState("grid");
@@ -50,6 +53,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
     () => Object.fromEntries(INST.map((institution) => [institution[0], institution[3]])),
   );
 
+  // Only institute admins fetch persisted member lists from the backend.
   useEffect(() => {
     if (me.role !== "admin") return undefined;
 
@@ -134,7 +138,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
         </p>
       </div>
       {managedUsersError && (
-        <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p role="alert" className="rounded-xl border border-bdb bg-bdb px-4 py-3 text-sm text-bd">
           {managedUsersError}
         </p>
       )}
@@ -164,7 +168,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
                   <td className="px-4 py-3">
                     <button
                       type="button"
-                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-100"
+                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-bdb bg-bdb px-3 py-2 text-xs font-bold text-bd transition hover:bg-bdb"
                       onClick={() => removeManagedUser(managedUser)}
                     >
                       Remove
@@ -304,6 +308,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
     </Section>
   );
 
+  // Student home combines profile discovery with community activity.
   const studentDashboard = () => (
       <>
         <div className="relative overflow-hidden rounded-[24px] border border-ln bg-[linear-gradient(120deg,#312e81,#5b21b6_58%,#7c3aed)] p-7 text-white shadow-[0_14px_35px_rgba(67,56,202,0.18)] sm:p-9">
@@ -312,7 +317,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
             <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em]">Your student hub</span>
             <h2 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Your next chapter starts here, {me.name.split(" ")[0]}.</h2>
             <p className="max-w-xl text-sm text-white/80 sm:text-base">{me.uni} · Build your network, find a mentor and take the next step in your career.</p>
-            <button className="mt-5 inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-white px-4 py-2.5 font-bold text-indigo-800 transition hover:bg-indigo-50" onClick={() => go("mentor")}>
+            <button className="mt-5 inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-sf px-4 py-2.5 font-bold text-pri transition hover:bg-soft" onClick={() => go("mentor")}>
               Find your mentor <span className="ml-2" aria-hidden="true">→</span>
             </button>
           </div>
@@ -342,6 +347,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
       </>
   );
 
+  // Alumni home emphasizes sharing advice and opportunities with students.
   const alumniDashboard = () => (
     <>
       <div className="relative overflow-hidden rounded-[24px] border border-ln bg-[linear-gradient(120deg,#064e3b,#047857_58%,#0f766e)] p-7 text-white shadow-[0_14px_35px_rgba(4,120,87,0.17)] sm:p-9">
@@ -351,7 +357,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
           <h2 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Good to see you, {me.name.split(" ")[0]}.</h2>
           <p className="max-w-xl text-sm text-white/80 sm:text-base">Your experience can open doors. Share advice, connect with your university community and help the next generation grow.</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <button className="inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-white px-4 py-2.5 font-bold text-emerald-900 transition hover:bg-emerald-50" onClick={() => setShowPost(true)}>
+            <button className="inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-sf px-4 py-2.5 font-bold text-ok transition hover:bg-okb" onClick={() => setShowPost(true)}>
               Write a post <span className="ml-2" aria-hidden="true">→</span>
             </button>
             <button className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2.5 font-bold text-white transition hover:bg-white/20" onClick={() => go("events")}>
@@ -372,6 +378,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
     </>
   );
 
+  // Institute-admin home summarizes the member records loaded above.
   const adminDashboard = () => {
     return (
       <>
@@ -381,13 +388,13 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
             <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em]">Platform administration</span>
             <h2 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Welcome back, {me.name.split(" ")[0]}.</h2>
             <p className="max-w-xl text-sm text-white/80 sm:text-base">Your overview of the alumni network. Review institution requests and keep the community running smoothly.</p>
-            <button className="mt-5 inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-white px-4 py-2.5 font-bold text-blue-950 transition hover:bg-blue-50" onClick={() => go("institutions")}>
+            <button className="mt-5 inline-flex cursor-pointer items-center justify-center rounded-xl border-0 bg-sf px-4 py-2.5 font-bold text-ink transition hover:bg-soft" onClick={() => go("institutions")}>
               Review institutions <span className="ml-2" aria-hidden="true">→</span>
             </button>
           </div>
         </div>
         {managedUsersError && (
-          <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p role="alert" className="rounded-xl border border-bdb bg-bdb px-4 py-3 text-sm text-bd">
             {managedUsersError}
           </p>
         )}
@@ -452,6 +459,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
     );
   };
 
+  // Sidebar keys select the matching role-aware screen below.
   const pages = {
     dash: () => me.role === "admin" ? adminDashboard() : me.role === "alumni" ? alumniDashboard() : studentDashboard(),
     students: () => managedUsersPage("student", managedStudents),
@@ -563,11 +571,11 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
             </div>
           </div>
           {me.role === "alumni" && (
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50 via-white to-violet-50 p-5 shadow-sm sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-ln bg-gradient-to-r from-indigo-50 via-white to-violet-50 p-5 shadow-sm sm:p-6">
               <div className="max-w-xl">
-                <span className="inline-flex rounded-full bg-white px-3 py-1 text-xs font-bold text-indigo-700 shadow-sm">For alumni</span>
-                <h3 className="mt-3 text-lg font-extrabold text-slate-900">Help a student take their next step</h3>
-                <p className="mt-1 text-sm text-slate-600">Share an open role or internship with your university community.</p>
+                <span className="inline-flex rounded-full bg-sf px-3 py-1 text-xs font-bold text-pri shadow-sm">For alumni</span>
+                <h3 className="mt-3 text-lg font-extrabold text-ink">Help a student take their next step</h3>
+                <p className="mt-1 text-sm text-mut">Share an open role or internship with your university community.</p>
               </div>
               <button
                 className="inline-flex flex-none cursor-pointer items-center justify-center gap-2 rounded-xl border-0 bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 font-bold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-xl"
@@ -724,51 +732,7 @@ export default function PortalPage({ me, onUpdateMe, onLogout, toast, ask }) {
           </main>
         </div>
 
-        <footer className="bg-slate-950 px-6 py-12 text-white sm:px-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-              <div>
-                <p className="text-lg font-extrabold tracking-tight">
-                  Alumni-Student Connect
-                </p>
-                <p className="mt-3 max-w-xs text-sm leading-6 text-slate-400">
-                  Stronger connections today. More possibilities tomorrow.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Contact</h3>
-                <p className="mt-3 text-xs text-slate-400">
-                  Sample details for demonstration
-                </p>
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Email</h3>
-                <a
-                  className="mt-3 inline-block text-sm text-indigo-300 transition hover:text-white"
-                  href="mailto:hello@example.org"
-                >
-                  hello@example.org
-                </a>
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Phone</h3>
-                <a
-                  className="mt-3 inline-block text-sm text-indigo-300 transition hover:text-white"
-                  href="tel:+12025550147"
-                >
-                  +1 (202) 555-0147
-                </a>
-                <p className="mt-2 text-xs text-slate-400">
-                  123 Demo Street, Example City
-                </p>
-              </div>
-            </div>
-            <p className="mt-10 border-t border-white/10 pt-5 text-center text-xs text-slate-500">
-              © {new Date().getFullYear()} Alumni-Student Connect. All rights
-              reserved.
-            </p>
-          </div>
-        </footer>
+        <SiteFooter />
 
         {showPost && (
           <PostModal

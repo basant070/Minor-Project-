@@ -1,3 +1,4 @@
+/** Purpose: Show a user's initials with a deterministic color background. */
 const hue = (name) =>
   ([...name].reduce((total, character) => total + character.charCodeAt(0), 0) *
     7) %

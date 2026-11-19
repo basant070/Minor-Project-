@@ -1,3 +1,4 @@
+/** Purpose: Define user accounts, roles, institute links, verification, and password rules. */
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
@@ -36,6 +37,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: USER_ROLES,
     },
+    // Regular accounts belong to an institute; super admins are platform-wide.
     tenantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Tenant",
@@ -86,6 +88,7 @@ const userSchema = new mongoose.Schema(
   },
 );
 
+// Hash changed passwords before saving; the original password is never stored.
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
@@ -96,6 +99,7 @@ userSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
+// Never include the password hash or internal version in API responses.
 userSchema.set("toJSON", {
   transform: (_document, returnedObject) => {
     delete returnedObject.password;

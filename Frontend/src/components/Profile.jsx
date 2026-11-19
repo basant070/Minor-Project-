@@ -1,3 +1,4 @@
+/** Purpose: Display profile details and collect role-specific profile edits. */
 import { useState } from "react";
 import Avatar from "./Avatar";
 import Field from "./Field";
@@ -13,6 +14,7 @@ export default function Profile({ me, onSave, toast }) {
 
   return (
     <>
+      {/* Read-only profile details, with fields shown according to the user's role. */}
       <div className="overflow-hidden rounded-[18px] border border-ln bg-sf !p-0 shadow-[0_4px_18px_rgba(30,30,80,0.06)]">
         <div className="h-[110px] bg-[linear-gradient(135deg,var(--pri),var(--pri2))]" />
         <div className="p-[18px]">
@@ -71,6 +73,7 @@ export default function Profile({ me, onSave, toast }) {
           )}
         </div>
       </div>
+      {/* Editable fields are collected locally and sent to the parent on save. */}
       <div className="rounded-[18px] border border-ln bg-sf p-[18px] shadow-[0_4px_18px_rgba(30,30,80,0.06)]">
         <h3>Edit profile</h3>
         {me.role === "alumni" && (

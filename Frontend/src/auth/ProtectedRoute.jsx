@@ -1,3 +1,4 @@
+/** Purpose: Gate frontend routes by session state and the user's role. */
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "./useAuth";
 
@@ -12,9 +13,10 @@ export default function ProtectedRoute({ allowedRoles }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
+  // This protects client navigation; backend middleware remains the security boundary.
   if (loading) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#f8faff] text-slate-600">
+      <main className="grid min-h-screen place-items-center bg-bg text-mut">
         Checking your session…
       </main>
     );

@@ -1,3 +1,4 @@
+/** Purpose: Map public account actions and the signed-in profile URL to handlers. */
 const express = require("express");
 const {
   login,

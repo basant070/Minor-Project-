@@ -1,3 +1,4 @@
+/** Purpose: Load institute-admin context and supply it to the shared portal UI. */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
@@ -8,6 +9,7 @@ import PortalPage from "./PortalPage";
 export default function InstituteAdminPortal() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  // PortalPage uses "admin" for institute-admin view checks; auth keeps the API role.
   const [portalUser, setPortalUser] = useState(() => ({
     ...user,
     role: "admin",
@@ -71,7 +73,7 @@ export default function InstituteAdminPortal() {
       {instituteError && (
         <p
           role="status"
-          className="fixed left-1/2 top-20 z-30 w-[min(92%,40rem)] -translate-x-1/2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 shadow-lg"
+          className="fixed left-1/2 top-20 z-30 w-[min(92%,40rem)] -translate-x-1/2 rounded-xl border border-wnb bg-wnb px-4 py-3 text-sm text-wn shadow-lg"
         >
           {instituteError}
         </p>

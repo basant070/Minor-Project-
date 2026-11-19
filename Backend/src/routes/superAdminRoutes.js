@@ -1,3 +1,4 @@
+/** Purpose: Map platform-management URLs and protect them for super admins. */
 const express = require("express");
 const {
   createInstitute,
@@ -31,6 +32,7 @@ const protect = require("../middleware/protect");
 
 const router = express.Router();
 
+// Record successful write actions after the route has produced its response.
 const recordAdminActivity = (req, res, next) => {
   if (!["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
     return next();
@@ -67,6 +69,7 @@ const recordAdminActivity = (req, res, next) => {
   return next();
 };
 
+// All platform-management routes are limited to signed-in super admins.
 router.use(protect, authorizeRoles("super_admin"), recordAdminActivity);
 router.get("/dashboard", getDashboard);
 router.post("/institutes", createInstitute);

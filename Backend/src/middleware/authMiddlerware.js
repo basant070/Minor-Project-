@@ -1,3 +1,4 @@
+/** Purpose: Verify a sign-in token and load its current account for a request. */
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = require("../models/User");
@@ -17,10 +18,11 @@ const authenticate = async (req, res, next) => {
   let payload;
   try {
     payload = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (_error) {
+  } catch {
     return res.status(401).json({ message: "Invalid or expired token." });
   }
 
+  // Confirm the token still matches a real, active account and its current role.
   if (
     !payload ||
     typeof payload !== "object" ||

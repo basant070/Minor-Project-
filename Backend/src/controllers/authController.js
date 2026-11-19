@@ -1,3 +1,4 @@
+/** Purpose: Handle student/alumni registration, email verification, and sign-in. */
 const crypto = require("node:crypto");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -12,6 +13,7 @@ const {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMAIL_VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000;
 
+// Email links contain the raw token; only its hash is stored in the database.
 const createEmailVerificationToken = () => {
   const token = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
@@ -51,6 +53,7 @@ const createToken = (user) => {
   );
 };
 
+// Validate a public registration and create a student/alumni account.
 const register = async (req, res, next) => {
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
@@ -159,6 +162,7 @@ const register = async (req, res, next) => {
   }
 };
 
+// Match the emailed token to its stored hash and mark the address as verified.
 const verifyEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
@@ -194,6 +198,7 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
+// Send a fresh verification link without revealing whether an email is registered.
 const resendVerification = async (req, res, next) => {
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
@@ -249,6 +254,7 @@ const resendVerification = async (req, res, next) => {
   }
 };
 
+// Check credentials and account readiness before issuing a sign-in token.
 const login = async (req, res, next) => {
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {

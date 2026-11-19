@@ -1,3 +1,4 @@
+/** Purpose: Present alumni details with connect, message, or mentorship actions. */
 import Avatar from "./Avatar";
 import Chips from "./Chips";
 

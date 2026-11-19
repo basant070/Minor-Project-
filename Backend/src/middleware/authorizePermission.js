@@ -1,3 +1,4 @@
+/** Purpose: Allow an action only when the signed-in role has its configured permission. */
 const PlatformSettings = require("../models/PlatformSettings");
 
 const DEFAULT_PERMISSIONS = {
@@ -9,6 +10,7 @@ const authorizePermission = (permission) => async (req, res, next) => {
     const settings = await PlatformSettings.findOne({ key: "global" }).select(
       "permissions",
     );
+    // Use built-in permissions until a global settings record overrides them.
     const rolePermissions =
       settings?.permissions?.[req.user.role] ||
       DEFAULT_PERMISSIONS[req.user.role] ||

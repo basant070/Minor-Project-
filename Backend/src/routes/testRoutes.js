@@ -1,3 +1,4 @@
+/** Purpose: Provide role-protected endpoints for checking API access rules. */
 const express = require("express");
 const authorizeRoles = require("../middleware/authorizeRoles");
 const protect = require("../middleware/protect");

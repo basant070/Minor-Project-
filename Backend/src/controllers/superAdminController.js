@@ -1,3 +1,4 @@
+/** Purpose: Create institutes and manage institute-admin accounts for super admins. */
 const mongoose = require("mongoose");
 const Tenant = require("../models/Tenant");
 const User = require("../models/User");
@@ -14,6 +15,7 @@ const safeUser = (user) => ({
   status: user.status,
 });
 
+// Institutes are the tenant boundaries used to group regular accounts.
 const createInstitute = async (req, res, next) => {
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
@@ -94,6 +96,7 @@ const listInstituteAdmins = async (_req, res, next) => {
   }
 };
 
+// Create an active institute-admin account and try to send its welcome email.
 const createInstituteAdmin = async (req, res, next) => {
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {

@@ -1,3 +1,4 @@
+/** Purpose: Add the signed-in institute ID to institute-admin database searches. */
 const mongoose = require("mongoose");
 
 const tenantQueryFilter = (req, additionalFilters = {}) => {
@@ -13,6 +14,7 @@ const tenantQueryFilter = (req, additionalFilters = {}) => {
     throw error;
   }
 
+  // Apply the signed-in admin's tenant last so callers cannot replace it.
   return {
     ...additionalFilters,
     tenantId: req.user.tenantId,

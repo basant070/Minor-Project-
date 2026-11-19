@@ -1,5 +1,7 @@
+/** Purpose: Validate email settings and send account-related email messages. */
 const nodemailer = require("nodemailer");
 
+// Check required settings before attempting to connect to the email provider.
 const getMissingEmailVariables = () =>
   [
     "EMAIL_HOST",
@@ -86,6 +88,7 @@ const getEmailConfig = () => {
   };
 };
 
+// Create a reusable Nodemailer connection from the validated settings.
 const createTransporter = (config) =>
   nodemailer.createTransport({
     host: config.host,
@@ -130,6 +133,7 @@ const escapeHtml = (value) =>
     return entities[character];
   });
 
+// Send a time-limited link for confirming a student/alumni email address.
 const sendVerificationEmail = async ({ email, name }, token) => {
   const config = getEmailConfig();
   const transporter = createTransporter(config);
@@ -166,6 +170,7 @@ const sendVerificationEmail = async ({ email, name }, token) => {
   }
 };
 
+// Send login details to an institute administrator created by a super admin.
 const sendInstituteAdminWelcomeEmail = async (
   { email, name, instituteName },
   password,
@@ -210,6 +215,7 @@ const sendInstituteAdminWelcomeEmail = async (
   }
 };
 
+// Send a diagnostic message to the configured sender account.
 const sendTestEmail = async () => {
   const config = getEmailConfig();
   const transporter = createTransporter(config);

@@ -1,3 +1,4 @@
+/** Purpose: Define a report record and the information needed to review it. */
 const mongoose = require("mongoose");
 
 const moderationReportSchema = new mongoose.Schema(

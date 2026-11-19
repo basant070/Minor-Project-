@@ -1,7 +1,9 @@
+/** Purpose: Let institute admins list or remove student/alumni accounts in their institute. */
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const tenantQueryFilter = require("../utils/tenantScope");
 
+// Every list and removal query is limited to the signed-in admin's institute.
 const listStudents = async (req, res, next) => {
   try {
     const students = await User.find(

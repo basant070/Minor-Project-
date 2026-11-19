@@ -1,3 +1,4 @@
+/** Purpose: Validate a job/internship form and send the new opportunity to its parent. */
 import { useState } from "react";
 
 const initialForm = {
@@ -43,19 +44,19 @@ export default function JobPostModal({ onCancel, onPublish }) {
   return (
     <div className="fixed inset-0 z-30 grid place-items-center overflow-y-auto bg-slate-950/55 p-4 backdrop-blur-sm">
       <form
-        className="my-auto max-h-[calc(100vh-2rem)] w-full max-w-xl overflow-y-auto rounded-3xl border border-white/70 bg-white p-5 shadow-2xl shadow-indigo-950/20 sm:p-7"
+        className="my-auto max-h-[calc(100vh-2rem)] w-full max-w-xl overflow-y-auto rounded-3xl border border-ln/70 bg-sf p-5 shadow-2xl shadow-indigo-950/20 sm:p-7"
         onSubmit={publish}
         role="dialog"
         aria-modal="true"
         aria-labelledby="job-post-title"
       >
         <div className="mb-5">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-indigo-600">Share an opportunity</span>
-          <h2 id="job-post-title" className="mt-1 text-2xl font-extrabold tracking-tight text-slate-900">Post a job or internship</h2>
-          <p className="mt-2 text-sm text-slate-500">Help students discover their next opportunity.</p>
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-pri">Share an opportunity</span>
+          <h2 id="job-post-title" className="mt-1 text-2xl font-extrabold tracking-tight text-ink">Post a job or internship</h2>
+          <p className="mt-2 text-sm text-mut">Help students discover their next opportunity.</p>
         </div>
 
-        {error && <p className="mb-3 text-sm font-semibold text-red-700" role="alert">{error}</p>}
+        {error && <p className="mb-3 text-sm font-semibold text-bd" role="alert">{error}</p>}
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="sm:col-span-2">
@@ -96,7 +97,7 @@ export default function JobPostModal({ onCancel, onPublish }) {
         </div>
 
         <div className="mt-6 flex flex-wrap justify-end gap-2">
-          <button className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-bold text-slate-700 transition hover:bg-slate-50" type="button" onClick={onCancel}>
+          <button className="rounded-xl border border-ln bg-sf px-4 py-2.5 font-bold text-ink transition hover:bg-bg" type="button" onClick={onCancel}>
             Cancel
           </button>
           <button className="rounded-xl border-0 bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 font-bold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-xl" type="submit">

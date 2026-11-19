@@ -1,3 +1,4 @@
+/** Purpose: Register students/alumni with an active institute and department. */
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
@@ -36,6 +37,7 @@ export default function Register() {
       .finally(() => setLoadingInstitutes(false));
   }, []);
 
+  // Department choices come from the selected institute, preventing mismatched pairs.
   useEffect(() => {
     if (!tenantId) return;
 
@@ -120,30 +122,30 @@ export default function Register() {
   };
 
   return (
-    <main className="relative isolate grid min-h-screen place-items-center overflow-hidden bg-[#f8faff] px-4 py-10 text-slate-900 sm:px-6">
+    <main className="relative isolate grid min-h-screen place-items-center overflow-hidden bg-bg px-4 py-10 text-ink sm:px-6">
       <div className="pointer-events-none absolute -left-32 top-10 -z-10 h-80 w-80 rounded-full bg-indigo-200/60 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-0 -z-10 h-80 w-80 rounded-full bg-violet-200/60 blur-3xl" />
-      <section className="w-full max-w-xl rounded-[28px] border border-white bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(79,70,229,0.3)] backdrop-blur sm:p-9">
-        <Link className="text-sm font-bold text-indigo-700 hover:text-violet-700" to="/">
+      <section className="w-full max-w-xl rounded-[28px] border border-ln bg-sf/90 p-6 shadow-[0_30px_90px_-35px_rgba(79,70,229,0.3)] backdrop-blur sm:p-9">
+        <Link className="text-sm font-bold text-pri hover:text-violet-700" to="/">
           ← Home
         </Link>
-        <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.16em] text-indigo-600">
+        <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.16em] text-pri">
           Join the community
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight">Create an account</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
+        <p className="mt-2 text-sm leading-6 text-mut">
           Register as a student or alumnus of an active institute.
         </p>
 
         {error && (
-          <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p role="alert" className="mt-5 rounded-xl border border-bdb bg-bdb px-4 py-3 text-sm text-bd">
             {error}
           </p>
         )}
         {success && (
           <div
             role="status"
-            className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+            className="mt-5 rounded-xl border border-okb bg-okb px-4 py-3 text-sm text-ok"
           >
             <p>{success}</p>
             {role === "alumni" && (
@@ -159,23 +161,24 @@ export default function Register() {
               type="button"
               onClick={resendVerification}
               disabled={resending || !email}
-              className="cursor-pointer border-0 bg-transparent p-0 text-sm font-bold text-indigo-700 hover:text-violet-700 disabled:cursor-wait disabled:opacity-60"
+              className="cursor-pointer border-0 bg-transparent p-0 text-sm font-bold text-pri hover:text-violet-700 disabled:cursor-wait disabled:opacity-60"
             >
               {resending ? "Sending…" : "Resend verification email"}
             </button>
             {resendMessage && (
-              <p role="status" className="mt-2 text-sm text-emerald-800">
+              <p role="status" className="mt-2 text-sm text-ok">
                 {resendMessage}
               </p>
             )}
             {resendError && (
-              <p role="alert" className="mt-2 text-sm text-red-700">
+              <p role="alert" className="mt-2 text-sm text-bd">
                 {resendError}
               </p>
             )}
           </div>
         )}
 
+        {/* Collect role, institute, department, and account details for public registration. */}
         {!success && (
           <form className="mt-6 space-y-4" onSubmit={submit}>
           <div>
@@ -184,7 +187,7 @@ export default function Register() {
               id="register-role"
               value={role}
               onChange={(event) => setRole(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             >
               <option value="student">Student</option>
               <option value="alumni">Alumni</option>
@@ -205,7 +208,7 @@ export default function Register() {
                 setError("");
               }}
               disabled={loadingInstitutes || institutes.length === 0}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 disabled:bg-slate-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft disabled:bg-soft"
             >
               <option value="">
                 {loadingInstitutes ? "Loading institutes…" : "Select your institute"}
@@ -217,7 +220,7 @@ export default function Register() {
               ))}
             </select>
             {!loadingInstitutes && institutes.length === 0 && !error && (
-              <p className="mt-1 text-xs text-slate-500">No active institutes are available yet.</p>
+              <p className="mt-1 text-xs text-mut">No active institutes are available yet.</p>
             )}
           </div>
           <div>
@@ -228,7 +231,7 @@ export default function Register() {
               value={departmentId}
               onChange={(event) => setDepartmentId(event.target.value)}
               disabled={!tenantId || loadingDepartments || departments.length === 0}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 disabled:bg-slate-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft disabled:bg-soft"
             >
               <option value="">
                 {!tenantId
@@ -244,7 +247,7 @@ export default function Register() {
               ))}
             </select>
             {tenantId && !loadingDepartments && departments.length === 0 && !error && (
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-mut">
                 No active departments are available for this institute yet.
               </p>
             )}
@@ -257,7 +260,7 @@ export default function Register() {
               required
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             />
           </div>
           <div>
@@ -269,7 +272,7 @@ export default function Register() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             />
           </div>
           <div>
@@ -282,7 +285,7 @@ export default function Register() {
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              className="w-full rounded-xl border border-ln bg-sf px-3 py-3 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-soft"
             />
           </div>
           <button
@@ -301,17 +304,17 @@ export default function Register() {
           </form>
         )}
         {!success && (
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-sm text-mut">
             Already registered?{" "}
-            <Link className="font-bold text-indigo-700 hover:text-violet-700" to="/login">
+            <Link className="font-bold text-pri hover:text-violet-700" to="/login">
               Log in
             </Link>
           </p>
         )}
         {success && (
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-sm text-mut">
             Already verified?{" "}
-            <Link className="font-bold text-indigo-700 hover:text-violet-700" to="/login">
+            <Link className="font-bold text-pri hover:text-violet-700" to="/login">
               Log in
             </Link>
           </p>

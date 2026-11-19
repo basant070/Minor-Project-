@@ -1,3 +1,4 @@
+/** Purpose: Load community context and provide shared dashboard handlers to PortalPage. */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
@@ -17,6 +18,7 @@ export default function CommunityPortal() {
   const [confirmation, setConfirmation] = useState(null);
   const toastTimeout = useRef(null);
 
+  // Student and alumni share this screen; resolve the institute name for its header.
   useEffect(() => {
     let active = true;
 
@@ -70,7 +72,7 @@ export default function CommunityPortal() {
       {instituteError && (
         <p
           role="status"
-          className="fixed left-1/2 top-20 z-30 w-[min(92%,40rem)] -translate-x-1/2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 shadow-lg"
+          className="fixed left-1/2 top-20 z-30 w-[min(92%,40rem)] -translate-x-1/2 rounded-xl border border-wnb bg-wnb px-4 py-3 text-sm text-wn shadow-lg"
         >
           {instituteError}
         </p>
